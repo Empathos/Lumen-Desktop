@@ -1,0 +1,133 @@
+<Window x:Class="Lumen.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lumen Desktop"
+        Width="340" Height="420"
+        MinWidth="240" MinHeight="200"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="True"
+        ResizeMode="CanResizeWithGrip"
+        MouseLeftButtonDown="OnDragWindow">
+
+    <Window.Resources>
+        <!-- Liquid-glass pill button -->
+        <Style x:Key="GlassButton" TargetType="Button">
+            <Setter Property="Foreground" Value="#DDE6EAEF"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="#22FFFFFF"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border CornerRadius="10"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="#2EFFFFFF"
+                                    BorderThickness="1"/>
+                            <Border x:Name="HoverWash" CornerRadius="10"
+                                    Background="#1EFFFFFF" Opacity="0"/>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="9,3"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HoverWash" Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="HoverWash" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Ultra-minimal scrollbar: 4px, no arrows, faint rounded thumb -->
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Width" Value="4"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid Width="4" Background="Transparent">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand"
+                                                  Opacity="0" Focusable="False"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand"
+                                                  Opacity="0" Focusable="False"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border x:Name="ThumbBar"
+                                                        Background="#26FFFFFF"
+                                                        CornerRadius="2"/>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ThumbBar"
+                                                                Property="Background" Value="#48FFFFFF"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border x:Name="GlassPanel" CornerRadius="14" Padding="10">
+        <Border.Background>
+            <SolidColorBrush x:Name="GlassBrush" Color="#48101418"/>
+        </Border.Background>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header: controls, kept tiny but visible -->
+            <DockPanel Grid.Row="0" Margin="2,0,2,6" LastChildFill="False">
+                <TextBlock Text="lumen desktop" Foreground="#88E0E6EA" FontSize="12"
+                           FontWeight="SemiBold" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                <Button x:Name="CloseButton" Content="✕" Click="OnClose" DockPanel.Dock="Right"
+                        Width="22" Height="22" Style="{x:Null}" Background="Transparent"
+                        Foreground="#66FFFFFF" BorderThickness="0" FontSize="11" Cursor="Hand"/>
+                <Button x:Name="MuteButton" Content="mute" Click="OnToggleMute" DockPanel.Dock="Right"
+                        Margin="4,0" Style="{StaticResource GlassButton}"/>
+                <Button x:Name="StartStopButton" Content="start" Click="OnToggleStartStop" DockPanel.Dock="Right"
+                        Margin="4,0" Style="{StaticResource GlassButton}" Background="#3341C67B"/>
+            </DockPanel>
+
+            <!-- Transcript -->
+            <ScrollViewer x:Name="TranscriptScroll" Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="TranscriptPanel" Margin="2,0,8,0"/>
+            </ScrollViewer>
+
+            <!-- Footer: transparency + status -->
+            <DockPanel Grid.Row="2" Margin="2,6,2,0" LastChildFill="True">
+                <Slider x:Name="OpacitySlider" DockPanel.Dock="Right" Width="70" Opacity="0.55"
+                        Minimum="0.04" Maximum="1.0" Value="0.6"
+                        ValueChanged="OnOpacityChanged" VerticalAlignment="Center"/>
+                <TextBlock x:Name="StatusText" Text="idle" Foreground="#7788E0C0"
+                           FontSize="10" VerticalAlignment="Center"/>
+            </DockPanel>
+        </Grid>
+    </Border>
+</Window>
