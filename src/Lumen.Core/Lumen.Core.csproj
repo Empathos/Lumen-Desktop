@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Lumen.Core</RootNamespace>
+    <Description>Portable core: Realtime session, tool routing, state. Never calls an OS API directly (LD-016).</Description>
+  </PropertyGroup>
+
+</Project>
