@@ -1,0 +1,9 @@
+bin/
+obj/
+*.user
+.vs/
+run.ps1
+run-gemini.ps1
+openai.key
+gemini.key
+.claude/settings.local.json
