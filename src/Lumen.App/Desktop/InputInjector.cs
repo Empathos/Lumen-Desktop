@@ -36,8 +36,19 @@ internal static class InputInjector
         {
             GetCursorPos(out var preGlide);
             AgentCursor.GlideToBlocking(x, y);
-            if (!TryBorrowCursor(preGlide, out var home)) return false;
             AgentCursor.Pulse();
+
+            // Second-pointer path (LD-030): touch is a separate Windows pointer,
+            // so left taps land concurrently with the user's mouse — no wait, no
+            // loan. Legacy apps' touch→mouse emulation may teleport the cursor
+            // to the tap point; ReturnCursor puts it back if so.
+            if (button.ToLowerInvariant() is not ("right" or "middle") && TouchInjector.Tap(x, y, clicks))
+            {
+                ReturnCursor(preGlide, x, y);
+                return true;
+            }
+
+            if (!TryBorrowCursor(preGlide, out var home)) return false;
             var (down, up) = button.ToLowerInvariant() switch
             {
                 "right" => (MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP),

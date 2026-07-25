@@ -14,10 +14,10 @@ namespace Lumen.App;
 /// Lumen's own visible cursor (LD-026) — the on-screen half of the MouseMux
 /// idea. A tiny always-on-top, click-through, non-activating overlay renders
 /// a distinct teal pointer that glides to wherever Lumen is acting. Combined
-/// with UIA background invokes, her pointer moves and "clicks" without the
-/// user's real cursor being touched; SendInput fallbacks borrow the real
-/// cursor for the instant of the action and hand it back (LD-028 cursor
-/// loan). Driver/PiP-level independent input remains IDEA-006 on the register.
+/// with UIA background invokes and synthetic touch taps (LD-030), her pointer
+/// moves and "clicks" without the user's real cursor being touched; drags and
+/// right-clicks still borrow the real cursor for an instant and hand it back
+/// (LD-028 loan). Session-level independence remains IDEA-006 on the register.
 /// </summary>
 public static class AgentCursor
 {

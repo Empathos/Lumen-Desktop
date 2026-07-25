@@ -41,6 +41,7 @@ Stable = UCXM has no − and no ?. Scores are lazy and must carry reasons.
 | LD-027 | Instant local barge-in | LD-003 | spec | ++0+ | src/Lumen.App/Audio/AudioLoop.cs | U: interrupt is critical on desktop; X: local detection, zero server round-trip |
 | LD-028 | MouseMux cursor loan | LD-011 | spec | ++0? | src/Lumen.App/Desktop/InputInjector.cs | U: user keeps pointer, no tug-of-war; C: save/act/restore, no driver; M: click restore verified live; drag-collision guard (button-down = busy) retest pending |
 | LD-029 | No-cursor background action lane | LD-009 | spec | ++0? | src/Lumen.App/Desktop/UiaScreenReader.cs | U: true-async for most actions, no driver; C: extends UIA reader; M: ValuePattern/Scroll/posted-click per-app reliability untested |
+| LD-030 | Synthetic touch second pointer | LD-028 | spec | ++0? | src/Lumen.App/Desktop/TouchInjector.cs | U: left clicks fully concurrent, zero wait; C: user-mode InjectTouchInput, no driver; M: RDP + legacy-emulation nudge untested; drags/right-clicks still loan |
 
 ## Ideas
 
