@@ -55,13 +55,13 @@ Prereqs: Windows 11, .NET 8 SDK, a mic and speakers (default devices).
 
 1. Put an OpenAI API key in `openai.key` at the repo root (or set
    `OPENAI_API_KEY`), and/or a Gemini key in `gemini.key` / `GEMINI_API_KEY`.
-   Key files and the `run*.ps1` launchers are git-ignored.
+   Key files are git-ignored.
 2. Build and run:
 
    ```powershell
    dotnet build
-   .\run.ps1          # OpenAI brain
-   .\run-gemini.ps1   # Gemini brain
+   $env:LUMEN_PROVIDER = "openai" # or "gemini"
+   dotnet run --project src\Lumen.App
    ```
 
 3. Click **start** in the glass window and say *"Open notepad."* Speak over
