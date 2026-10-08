@@ -29,7 +29,7 @@ transcript. Interrupt her mid-sentence and she stops instantly.
 
 Both providers implement the same `IVoiceSession` contract for A/B testing:
 
-| | OpenAI (`run.ps1`) | Gemini (`run-gemini.ps1`) |
+| | OpenAI (`LUMEN_PROVIDER=openai`) | Gemini (`LUMEN_PROVIDER=gemini`) |
 |---|---|---|
 | Model | `gpt-realtime-2.1` | `gemini-3.1-flash-live-preview` |
 | Sight | on-demand screenshots | streaming video ≤1 fps |

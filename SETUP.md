@@ -1,23 +1,26 @@
-# Lumen Desktop — Setup & Run (Iteration 1: walking skeleton)
+# Lumen Desktop — Setup & Run (Iteration 2)
 
 ## What this build does
 
-Talk → live transcript in a small glass window → Lumen answers in voice and
-can act on the desktop with three tools: `launch_app`, `focus_window`,
-`list_windows`. Barge-in works: speak over Lumen and its audio stops
-immediately. Everything else (UIA element maps, clicking/typing, Alice
-bridge) is stubbed behind interfaces for iteration 2.
+Talk → live transcript in a small glass window → Lumen answers in voice, sees
+the desktop, and acts through UI Automation or pointer/keyboard fallbacks.
+Barge-in works: speak over Lumen and its audio stops immediately. OpenAI uses
+on-demand screenshots; Gemini can stream ambient screen frames at up to 1 fps.
+The Alice bridge remains stubbed behind its interface.
 
 ## Prerequisites
 
 - Windows 11, .NET 8+ SDK (`dotnet --list-sdks` to confirm) — ✔ verified
-- An OpenAI API key with Realtime API access
+- An OpenAI API key with Realtime API access and/or a Gemini API key with Live
+  API access
 - A microphone and speakers (default devices are used)
 
 ## 1. Set your API key (once, per user)
 
 ```powershell
 setx OPENAI_API_KEY "sk-..."
+# and/or
+setx GEMINI_API_KEY "..."
 ```
 
 Open a **new** terminal afterward — `setx` doesn't affect the current one.
@@ -25,8 +28,9 @@ Open a **new** terminal afterward — `setx` doesn't affect the current one.
 ## 2. Build & run
 
 ```powershell
-cd Q:\Lumen-Desktop
+cd <path-to-your-clone>\Lumen-Desktop
 dotnet build
+$env:LUMEN_PROVIDER = "openai" # or "gemini"
 dotnet run --project src\Lumen.App
 ```
 
@@ -41,11 +45,15 @@ bottom-right slider changes transparency).
 3. Say, while Lumen is talking: *"Stop — open Chrome instead."* →
    playback cuts instantly (barge-in) and Chrome launches.
 4. Say: *"What windows are open?"* → `⚙ list_windows`, spoken summary.
+5. Say: *"What is on my screen?"* → Lumen captures or reads the current
+   desktop, depending on the selected provider.
 
 ## Troubleshooting
 
-- **"set OPENAI_API_KEY and restart"** — step 1 was skipped or the terminal
-  is stale.
+- **"set OPENAI_API_KEY and restart"** (or the Gemini equivalent) — step 1
+  was skipped or the terminal is stale. You can also put the key in
+  `openai.key` or `gemini.key` at the repository root; both files are ignored
+  by Git.
 - **`api error: …` in the status line** — the raw server message; model
   access or protocol issues show up here. The input-transcription model is
   configured separately (`RealtimeClientOptions.InputTranscriptionModel`),
@@ -53,9 +61,8 @@ bottom-right slider changes transparency).
   lines go missing.
 - **No sound in/out** — the app uses the Windows *default* mic/speaker;
   check Sound settings.
-- **Latency feels high** — expected tuning knobs for iteration 2:
-  reasoning effort (already `low`), mic chunk size (50 ms), speaker buffer
-  (100 ms).
+- **Latency feels high** — the main tuning knobs are reasoning effort (already
+  `low`), mic chunk size (50 ms), and speaker buffer (100 ms).
 
 ## Project map
 
