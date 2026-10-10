@@ -23,7 +23,8 @@ setx OPENAI_API_KEY "sk-..."
 setx GEMINI_API_KEY "..."
 ```
 
-Open a **new** terminal afterward — `setx` doesn't affect the current one.
+Lumen reads the per-user environment store directly, so it can see values
+written by `setx` without requiring a new terminal.
 
 ## 2. Build & run
 
@@ -51,7 +52,7 @@ bottom-right slider changes transparency).
 ## Troubleshooting
 
 - **"set OPENAI_API_KEY and restart"** (or the Gemini equivalent) — step 1
-  was skipped or the terminal is stale. You can also put the key in
+  was skipped or the saved value is empty. You can also put the key in
   `openai.key` or `gemini.key` at the repository root; both files are ignored
   by Git.
 - **`api error: …` in the status line** — the raw server message; model
