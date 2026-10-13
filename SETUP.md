@@ -51,8 +51,9 @@ bottom-right slider changes transparency).
 
 ## Troubleshooting
 
-- **"set OPENAI_API_KEY and restart"** (or the Gemini equivalent) — step 1
-  was skipped or the saved value is empty. You can also put the key in
+- **`no key: set OPENAI_API_KEY or create openai.key`** (or the Gemini
+  equivalent) — step 1 was skipped or the saved value is empty. You can also
+  put the key in
   `openai.key` or `gemini.key` at the repository root; both files are ignored
   by Git.
 - **`api error: …` in the status line** — the raw server message; model
