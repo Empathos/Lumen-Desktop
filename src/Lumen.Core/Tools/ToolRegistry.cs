@@ -26,6 +26,10 @@ public sealed class ToolRegistry
             using var doc = JsonDocument.Parse(string.IsNullOrWhiteSpace(argumentsJson) ? "{}" : argumentsJson);
             return await tool.Handler(doc.RootElement.Clone(), ct).ConfigureAwait(false);
         }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             return JsonSerializer.Serialize(new { error = ex.Message });
